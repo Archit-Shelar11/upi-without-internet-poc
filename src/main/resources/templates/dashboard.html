@@ -435,7 +435,7 @@
         }
 
         /* --- Responsive Design --- */
-        @media (max-width: 1024px) {
+        @media (max-width: 1100px) {
             .top-grid {
                 grid-template-columns: 1fr 1fr;
             }
@@ -444,30 +444,50 @@
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 850px) {
             body {
-                padding: 16px;
+                padding: 12px;
             }
             .app-header {
                 flex-direction: column;
-                gap: 16px;
+                gap: 12px;
                 align-items: flex-start;
             }
+            .header-title-group {
+                flex-wrap: wrap;
+            }
+            h1 {
+                font-size: 20px;
+                line-height: 1.2;
+            }
+            .header-subtitle {
+                font-size: 13px;
+                word-wrap: break-word;
+            }
             .top-grid {
-                grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
             }
             .bottom-grid {
-                grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
             }
             .form-row {
                 flex-direction: column;
+                gap: 8px;
             }
             .card {
                 padding: 16px;
+                width: 100%;
+                box-sizing: border-box;
+                overflow: hidden; /* prevents tables from stretching cards */
             }
             .table-responsive {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
+                width: 100%;
             }
         }
     </style>
