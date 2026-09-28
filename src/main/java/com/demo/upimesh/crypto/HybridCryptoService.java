@@ -1,41 +1,41 @@
 package com.demo.upimesh.crypto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.demo.upimesh.model.PaymentInstruction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+    import com.fasterxml.jackson.databind.ObjectMapper;
+    import com.demo.upimesh.model.PaymentInstruction;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.OAEPParameterSpec;
-import javax.crypto.spec.PSource;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.ByteBuffer;
-import java.security.MessageDigest;
-import java.security.PublicKey;
-import java.security.SecureRandom;
-import java.security.spec.MGF1ParameterSpec;
-import java.util.Base64;
+    import javax.crypto.Cipher;
+    import javax.crypto.KeyGenerator;
+    import javax.crypto.SecretKey;
+    import javax.crypto.spec.GCMParameterSpec;
+    import javax.crypto.spec.OAEPParameterSpec;
+    import javax.crypto.spec.PSource;
+    import javax.crypto.spec.SecretKeySpec;
+    import java.nio.ByteBuffer;
+    import java.security.MessageDigest;
+    import java.security.PublicKey;
+    import java.security.SecureRandom;
+    import java.security.spec.MGF1ParameterSpec;
+    import java.util.Base64;
 
-/**
- * Hybrid encryption — the same pattern used by TLS, PGP, Signal, etc.
- *
- * Why hybrid? RSA can only encrypt small data (~245 bytes for a 2048-bit key).
- * Our payment instruction (JSON) might be ~300 bytes, and in real use we might
- * include device certificates and signatures pushing it well over.
- *
- * Solution: generate a fresh AES key per packet, encrypt the JSON with AES-GCM
- * (fast + authenticated), then encrypt JUST the AES key with RSA-OAEP.
- *
- * Wire format (after base64 encoding):
- *   [ 256 bytes RSA-encrypted AES key ][ 12 bytes GCM IV ][ ciphertext + 16-byte tag ]
- *
- * AES-GCM is authenticated encryption: any single-bit tampering with the ciphertext
- * causes decryption to fail with an exception. This is what makes it safe for
- * untrusted intermediates to hold.
- */
+    /**
+     * Hybrid encryption — the same pattern used by TLS, PGP, Signal, etc.
+     *
+     * Why hybrid? RSA can only encrypt small data (~245 bytes for a 2048-bit key).
+     * Our payment instruction (JSON) might be ~300 bytes, and in real use we might
+     * include device certificates and signatures pushing it well over.
+     *
+     * Solution: generate a fresh AES key per packet, encrypt the JSON with AES-GCM
+     * (fast + authenticated), then encrypt JUST the AES key with RSA-OAEP.
+     *
+     * Wire format (after base64 encoding):
+     *   [ 256 bytes RSA-encrypted AES key ][ 12 bytes GCM IV ][ ciphertext + 16-byte tag ]
+     *
+     * AES-GCM is authenticated encryption: any single-bit tampering with the ciphertext
+     * causes decryption to fail with an exception. This is what makes it safe for
+     * untrusted intermediates to hold.
+     */
 @Service
 public class HybridCryptoService {
 
