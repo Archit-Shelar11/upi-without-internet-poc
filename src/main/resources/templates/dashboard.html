@@ -433,6 +433,43 @@
             margin-top: 10px;
             font-family: var(--font-mono);
         }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .top-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+            .app-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            .top-grid {
+                grid-template-columns: 1fr;
+            }
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                flex-direction: column;
+            }
+            .card {
+                padding: 16px;
+            }
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
     </style>
 </head>
 <body>
@@ -545,18 +582,20 @@
             <div class="card-header">
                 <span>Account Overview</span>
             </div>
-            <table id="accounts-table">
-                <thead>
-                    <tr>
-                        <th>VPA</th>
-                        <th>Holder</th>
-                        <th>Balance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Dynamically populated -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table id="accounts-table">
+                    <thead>
+                        <tr>
+                            <th>VPA</th>
+                            <th>Holder</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+            </div>
             <div class="cache-info" id="cacheInfo">Idempotency cache size: 0</div>
         </div>
 
@@ -570,22 +609,24 @@
             <div class="card-header">
                 <span>Transaction Ledger</span>
             </div>
-            <table id="tx-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Bridge</th>
-                        <th>Hops</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Dynamically populated -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table id="tx-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Bridge</th>
+                            <th>Hops</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Network Activity Log -->
@@ -724,14 +765,6 @@ async function resetMesh() {
 // Initial load & auto-poll
 refresh();
 setInterval(refresh, 2500);
-</script>
-</body>
-</html>
-
-}
-
-refresh();
-setInterval(refresh, 3000);
 </script>
 </body>
 </html>
